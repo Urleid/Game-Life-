@@ -29,12 +29,11 @@ namespace Urleid.Remember
             set { _age = value; }
         }
 
-        // Уровень отношений: 0 - знакомые, 1 - друзья, 2 - любовники, 3 - семья.
-        private Dictionary<Person, uint> _relationship;
-        public Dictionary<Person, uint> Relationship
+        private List<Relationships> _relationships;
+        public List<Relationships> Relationships
         {
-            get { return _relationship; }
-            set { _relationship = value; }
+            get { return _relationships; }
+            set { _relationships = value; }
         }
 
 
@@ -44,7 +43,7 @@ namespace Urleid.Remember
             _lastName = lastName;
             _age = age;
 
-            _relationship = new Dictionary<Person, uint>();
+            _relationships = new List<Relationships>();
         }
     }
 }

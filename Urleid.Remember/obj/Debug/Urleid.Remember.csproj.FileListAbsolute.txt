@@ -5,3 +5,10 @@ D:\Программирование\Practice\Urleid.Remember\Urleid.Remember\obj
 D:\Программирование\Practice\Urleid.Remember\Urleid.Remember\obj\Debug\Urleid.Remember.csproj.CoreCompileInputs.cache
 D:\Программирование\Practice\Urleid.Remember\Urleid.Remember\obj\Debug\Urleid.Remember.exe
 D:\Программирование\Practice\Urleid.Remember\Urleid.Remember\obj\Debug\Urleid.Remember.pdb
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\bin\Debug\Urleid.Remember.exe.config
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\bin\Debug\Urleid.Remember.exe
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\bin\Debug\Urleid.Remember.pdb
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\obj\Debug\Urleid.Remember.csprojAssemblyReference.cache
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\obj\Debug\Urleid.Remember.csproj.CoreCompileInputs.cache
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\obj\Debug\Urleid.Remember.exe
+D:\Программирование\Practice\Urleid.Remember\Game-Life-\Urleid.Remember\obj\Debug\Urleid.Remember.pdb

@@ -15,114 +15,25 @@ namespace Urleid.Remember
         /// <param name="person2">Второй персонаж.</param>
         public static void Acquaintance(Person person1, Person person2)
         {
-            if (person1.Relationship.ContainsKey(person2))
-            {
-                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} уже знакомы");
-            }
-            else
-            {
-                BuildingRelationships(person1, person2, 0);
-                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} теперь знакомые");
-            }
-        }
+            bool tolerance = true;
 
-        /// <summary>
-        /// Возникновение дружбы.
-        /// </summary>
-        /// <param name="person1">Первый персонаж.</param>
-        /// <param name="person2">Второй персонаж.</param>
-        public static void Friendship(Person person1, Person person2)
-        {
-            uint relationshipLevel;
-
-            if (!person1.Relationship.ContainsKey(person2))
+            for (int i = 0; i < person1.Relationships.Count; i++)
             {
-                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} не знакомы");
-            }
-            else
-            {
-                person1.Relationship.TryGetValue(person2, out relationshipLevel);
-
-                if (relationshipLevel == 1) // Уровень отношений - друзья.
+                if (person1.Relationships[i].Person1 == person1 && person1.Relationships[i].Person2 == person2)
                 {
-                    Console.WriteLine($"{person1.FirstName} и {person2.FirstName} уже друзья");
-                }
-                else
-                {
-                    EditRelationships(person1, person2, 1);
-                    Console.WriteLine($"{person1.FirstName} и {person2.FirstName} теперь друзья");
+                    Console.WriteLine("ОШИБКА! Эти персонажи уже знакомы");
+                    tolerance = false;
+                    break;
                 }
             }
-        }
-        
-        /// <summary>
-        /// Возникновение любовных отношений.
-        /// </summary>
-        /// <param name="person1">Первый персонаж.</param>
-        /// <param name="person2">Второй персонаж.</param>
-        public static void LoveRelationship(Person person1, Person person2)
-        {
-            uint relationshipLevel;
 
-            if (!person1.Relationship.ContainsKey(person2))
+            if (tolerance == true)
             {
-                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} не знакомы");
+                // Поочередное внесение отношений в список отношений обоих персонажей (параметры отношений должны быть зеркальны для обоих персонажей).
+                person1.Relationships.Add(new Relationships(person1, person2));
+                person2.Relationships.Add(new Relationships(person2, person1));
+                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} познакомились");
             }
-            else
-            {
-                person1.Relationship.TryGetValue(person2, out relationshipLevel);
-
-                if (relationshipLevel == 2) // Уровень отношений - любовники.
-                {
-                    Console.WriteLine($"{person1.FirstName} и {person2.FirstName} уже любовники");
-                }
-                else
-                {
-                    EditRelationships(person1, person2, 2);
-                    Console.WriteLine($"Между {person1.FirstName} и {person2.FirstName} возникают любовные отношения");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Создание семьи.
-        /// </summary>
-        /// <param name="person1">Первый персонаж.</param>
-        /// <param name="person2">Воорой персонаж.</param>
-        public static void Wedding(Person person1, Person person2)
-        {
-            uint relationshipLevel;
-
-            if (!person1.Relationship.ContainsKey(person2))
-            {
-                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} не знакомы");
-            }
-            else
-            {
-                person1.Relationship.TryGetValue(person2, out relationshipLevel);
-
-                if (relationshipLevel == 3) // Уровень отношений - семья.
-                {
-                    Console.WriteLine($"{person1.FirstName} и {person2.FirstName} уже в браке");
-                }
-                else
-                {
-                    EditRelationships(person1, person2, 3);
-                    Console.WriteLine($"{person1.FirstName} и {person2.FirstName} заключают брак");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Создание отношений.
-        /// </summary>
-        /// <param name="person1">Первый персонаж.</param>
-        /// <param name="person2">Второй персонаж.</param>
-        /// <param name="relationshipLevel">Уровень отношений (0 - знакомые, 1 - друзья, 2 - любовники, 3 - семья.</param>
-        private static void BuildingRelationships(Person person1, Person person2, uint relationshipLevel)
-        {
-            person1.Relationship.Add(person2, relationshipLevel);
-            person2.Relationship.Add(person1, relationshipLevel);
         }
 
         /// <summary>
@@ -130,11 +41,71 @@ namespace Urleid.Remember
         /// </summary>
         /// <param name="person1">Первый персонаж.</param>
         /// <param name="person2">Второй персонаж.</param>
-        /// <param name="relationshipLevel">Уровень отношений (0 - знакомые, 1 - друзья, 2 - любовники, 3 - семья.</param>
-        private static void EditRelationships(Person person1, Person person2, uint relationshipLevel)
+        /// <param name="relationshipProcess">Процесс отношений (0-300 - знакомые, 600 - друзья, 900 - любовники, 1200 - семья.</param>
+        public static void EditRelationships(Person person1, Person person2, int relationshipProcess)
         {
-            person1.Relationship[person2] = relationshipLevel;
-            person2.Relationship[person1] = relationshipLevel;
+            bool tolerance = false;
+
+            for (int i = 0; i < person1.Relationships.Count; i++)
+            {
+                if (person1.Relationships[i].Person1 == person1 && person1.Relationships[i].Person2 == person2)
+                {
+                    // Изменяем значение прогресса.
+                    person1.Relationships[i].RelationshipProcess += relationshipProcess;
+                    person2.Relationships[i].RelationshipProcess += relationshipProcess;
+                    
+                    // Если значение прогресса позволяет перейти на новый уровень отношений, то делаем это.
+                    if (person1.Relationships[i].RelationshipProcess >= person1.Relationships[i].RelationshipLevel * 300)
+                    {
+                        if (person1.Relationships[i].RelationshipLevel < 4)
+                        {
+                            // Производим повышение отношений до тех пор, пока позволяет значение прогресса.
+                            while (person1.Relationships[i].RelationshipProcess >= person1.Relationships[i].RelationshipLevel * 300)
+                            {
+                                person1.Relationships[i].RelationshipProcess -= person1.Relationships[i].RelationshipLevel * 300;
+                                person2.Relationships[i].RelationshipProcess -= person2.Relationships[i].RelationshipLevel * 300;
+                                person1.Relationships[i].RelationshipLevel++;
+                                person2.Relationships[i].RelationshipLevel++;
+                            }
+                        }
+
+                        // Если уровень получился выше 4, то мы его возвращаем на максимальное значение (4-ый) с максимальным значением прогресса.
+                        if (person1.Relationships[i].RelationshipLevel > 4)
+                        {
+                            person1.Relationships[i].RelationshipLevel = 4;
+                            person1.Relationships[i].RelationshipProcess = person1.Relationships[i].RelationshipLevel * 300;
+                            person2.Relationships[i].RelationshipLevel = 4;
+                            person2.Relationships[i].RelationshipProcess = person1.Relationships[i].RelationshipLevel * 300;
+                        }
+
+                        // Выводим результат изменений отношений.
+                        switch (person1.Relationships[i].RelationshipLevel)
+                        {
+                            case 1:
+                                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} теперь знакомые.");
+                                break;
+                            case 2:
+                                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} теперь друзья.");
+                                break;
+                            case 3:
+                                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} теперь любовники.");
+                                break;
+                            case 4:
+                                Console.WriteLine($"{person1.FirstName} и {person2.FirstName} теперь семья.");
+                                break;
+                        }
+                    }
+                    tolerance = true;
+                    break;
+                }
+            }
+
+            if (tolerance == false)
+            {
+                Console.WriteLine("ОШИБКА! Эти персонажи еще не знакомы");
+            }
         }
+
+
     }
 }
